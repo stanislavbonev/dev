@@ -5,8 +5,17 @@ export class CalculatorModel {
     private memory: string;
     private temporaryMemory: string;
     private observers: ((data: any) => void)[] = [];
+    private operator:string;
 
     constructor() { }
+
+    public setOperator(data:string){
+        this.operator = data;
+    }
+
+    public getOperator(){
+        return this.operator;
+    }
 
     public setMemory(data: any): void {
         this.memory = data;
