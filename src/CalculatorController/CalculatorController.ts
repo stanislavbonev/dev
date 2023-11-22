@@ -3,10 +3,11 @@ import { CalculatorFactory } from "../Factory/CalculatorFactory";
 import { CalculatorView } from "../CalculatorView/CalculatorView";
 import { CalculatorEvents } from "../CalculatorEvents";
 import { EventDispatcher } from "../EventDispatcher";
+import  calcOperations  from "../SimpleBrain/SimpleBrain"
 import * as PIXI from "pixi.js";
 
 export class CalculatorController extends PIXI.Container {
-    //TODO fix variable types and all types as whole!!!!!!!!!!!!!
+    //TODO fix variable types
     private calaculatorFactory: CalculatorFactory;
     private calculatorView: CalculatorView;
     private calculatorModel: CalculatorModel;
@@ -25,9 +26,9 @@ export class CalculatorController extends PIXI.Container {
         this.setCalculatorView();
         this.setCalculatorFactory();
         this.setControllerObserver();
+
         EventDispatcher.getInstance().getDispatcher().on(CalculatorEvents.NUMERIC_BUTTON_PRESSED, this.readNumericButton.bind(this));
         EventDispatcher.getInstance().getDispatcher().on(CalculatorEvents.OPERATOR_BUTTON_PRESSED, this.readOperatorButton.bind(this));
-        //sadasdadsa
     }
 
     public readNumericButton(data: number) {
@@ -42,7 +43,7 @@ export class CalculatorController extends PIXI.Container {
 
     public readOperatorButton(data: string) {
 
-        if (data === "+") {
+        if (data === "+" || "-" || "x" || "/") {
             this.calculatorModel.setTemporaryMemory();
             this.numbers = [];
         }
@@ -51,7 +52,7 @@ export class CalculatorController extends PIXI.Container {
             this.calculatorModel.setMemory(0);
             this.numbers = [];
         }
-        //TOODO imam dva procenta sushto taka DA OPRAVCQ TIPIZACIQTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        //TOODO refactor this code
         if (data === "<-") {
             this.deleteElement = this.calculatorModel.getMemory();
             if (this.deleteElement.length > 0) {
@@ -72,6 +73,7 @@ export class CalculatorController extends PIXI.Container {
         }
 
         if (data === "=") {
+            
             if (this.numbers.length === 0) {
                 return
             }
@@ -79,6 +81,7 @@ export class CalculatorController extends PIXI.Container {
             const value2 = parseInt(this.calculatorModel.getTemporaryMemory()) as number;
            // const total = this.add.execute(value2, value1)
           //  this.calculatorModel.setMemory(total);
+          calcOperations
             this.numbers = [];
         }
     }

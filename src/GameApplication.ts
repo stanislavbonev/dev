@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js';
 import { CalculatorView } from "./CalculatorView/CalculatorView";
 import { CalculatorController } from './CalculatorController/CalculatorController';
 import { CalculatorModel } from './CalculatorModel/CalculatorModel';
-import { Command } from "./Command/Command"
+
 export class GameApplication extends PIXI.Application {
 
     public static STAGE_WIDTH: number = 800;
@@ -60,7 +60,6 @@ export class GameApplication extends PIXI.Application {
     }
 
     private onLoadComplete() {
-        //   const command = new Command();
         const model: CalculatorModel = new CalculatorModel()
         const controller = new CalculatorController(model);
         this.mainContainer.addChild(controller);
