@@ -42,14 +42,16 @@ export class CalculatorController extends PIXI.Container {
     }
 
     public readOperatorButton(data: string) {
-
-        if (data === "+" || "-" || "x" || "/") {
+        if (["+","-","x","/"].includes(data)) {
             this.calculatorModel.setTemporaryMemory();
+            this.calculatorModel.setOperator(data);
+            console.log(this.calculatorModel.getOperator())
             this.numbers = [];
         }
 
         if (data === "CE") {
             this.calculatorModel.setMemory(0);
+            this.calculatorModel.setOperator("");
             this.numbers = [];
         }
         //TOODO refactor this code
@@ -73,15 +75,15 @@ export class CalculatorController extends PIXI.Container {
         }
 
         if (data === "=") {
-            
             if (this.numbers.length === 0) {
                 return
             }
-            const value1 = parseInt(this.calculatorModel.getMemory()) as number;
-            const value2 = parseInt(this.calculatorModel.getTemporaryMemory()) as number;
-           // const total = this.add.execute(value2, value1)
-          //  this.calculatorModel.setMemory(total);
-          calcOperations
+            const value1:number = parseInt(this.calculatorModel.getMemory()) as number;
+            const value2:number = parseInt(this.calculatorModel.getTemporaryMemory()) as number;
+            const operator:string = this.calculatorModel.getOperator();
+            const total = calcOperations[operator](value1,value2)
+
+            this.calculatorModel.setMemory(total);
             this.numbers = [];
         }
     }
