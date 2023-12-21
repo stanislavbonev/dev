@@ -24,19 +24,20 @@ export class NumericButton extends BaseButton {
         this.createButton();
         this.createLabel();
         this.onHover();
-        this.button.on('click', this.onClicek, this)
+        this.button.on('mouseup', this.onClick, this)
     }
     //TODO IMPROVE INHERITANCE FROM BASE BUTTON REPEATABLE CODE FOR BUTTON APEARENCE
     protected createButton() {
         const gfx: PIXI.Graphics = new PIXI.Graphics();
-        gfx.beginFill(0x00FFFF);
-        gfx.drawRect(0, 0, 50, 50);
+        gfx.beginFill(0x000000);
+        gfx.drawRoundedRect(0, 0, 50, 50, 10);
         gfx.endFill();
         const texture: PIXI.Texture = GameApplication.getApp().renderer.generateTexture(gfx)
         this.button = new PIXI.Sprite(texture);
         this.button.x = this.xPos;
         this.button.y = this.yPos;
         this.button.interactive = true;
+        //this.button.anchor.set(0.5);
         this.addChild(this.button);
     }
 
@@ -51,7 +52,7 @@ export class NumericButton extends BaseButton {
         this.button.addChild(this.buttonText);
     }
 
-    private onClicek(): void {
+    protected onClick(): void {
         // console.log("bbbbbbbbbbbbbbbbbbbbbbbb")
         // this.clickCount++;
         // let a: string = ""
@@ -68,9 +69,13 @@ export class NumericButton extends BaseButton {
     }
 
     protected onMouseOver() {
-        this.button.tint = 0x000000;
+        this.button.scale.x=0.95;
+        this.button.scale.y=0.95;
+        //this.button.tint = 0x000000;
     }
     protected onMouseOut() {
-        this.button.tint = 0x00FFFF;
+        this.button.scale.x=1;
+        this.button.scale.y=1;
+       // this.button.tint = 0x00FFFF;
     }
 }

@@ -3,7 +3,6 @@ import { CalculatorFactory } from "../Factory/CalculatorFactory";
 import { CalculatorView } from "../CalculatorView/CalculatorView";
 import { CalculatorEvents } from "../CalculatorEvents";
 import { EventDispatcher } from "../EventDispatcher";
-import  calcOperations  from "../SimpleBrain/SimpleBrain"
 import * as PIXI from "pixi.js";
 
 export class CalculatorController extends PIXI.Container {
@@ -15,10 +14,11 @@ export class CalculatorController extends PIXI.Container {
     private delete: any = 0;
     private deleteElement: any = "";
     private stringifiedNumbers: string;
-
-    constructor(model: CalculatorModel) {
+    private operationFinished:boolean = false;
+    constructor(model: CalculatorModel,calculatorView:CalculatorView) {
         super();
         this.calculatorModel = model;
+        this.calculatorView = calculatorView;
         this.init();
     }
 
@@ -33,6 +33,8 @@ export class CalculatorController extends PIXI.Container {
 
     public readNumericButton(data: number) {
         this.calculatorModel.setMemory(this.formatInputKeyboardData(data));
+        this.operationFinished = true;
+    
     }
 
     private formatInputKeyboardData(data: number) {
@@ -42,10 +44,9 @@ export class CalculatorController extends PIXI.Container {
     }
 
     public readOperatorButton(data: string) {
+
         if (["+","-","x","/"].includes(data)) {
-            this.calculatorModel.setTemporaryMemory();
-            this.calculatorModel.setOperator(data);
-            console.log(this.calculatorModel.getOperator())
+this.calculatorModel.setOperator(data)
             this.numbers = [];
         }
 
@@ -54,19 +55,9 @@ export class CalculatorController extends PIXI.Container {
             this.calculatorModel.setOperator("");
             this.numbers = [];
         }
-        //TOODO refactor this code
+
         if (data === "<-") {
-            this.deleteElement = this.calculatorModel.getMemory();
-            if (this.deleteElement.length > 0) {
-                this.delete = this.calculatorModel.getMemory();
-                console.log(typeof this.delete)
-                this.deleteElement = this.delete.substring(0, this.delete.length - 1)
-                this.calculatorModel.setMemory(this.deleteElement);
-                if (this.deleteElement.length === 0) {
-                    this.calculatorModel.setMemory("0");
-                    this.numbers = [];
-                }
-            }
+           this.calculatorModel.deleteDigit();                
         }
 
         if (data === "C") {
@@ -75,16 +66,11 @@ export class CalculatorController extends PIXI.Container {
         }
 
         if (data === "=") {
-            if (this.numbers.length === 0) {
-                return
-            }
-            const value1:number = parseInt(this.calculatorModel.getMemory()) as number;
-            const value2:number = parseInt(this.calculatorModel.getTemporaryMemory()) as number;
-            const operator:string = this.calculatorModel.getOperator();
-            const total = calcOperations[operator](value1,value2)
-
-            this.calculatorModel.setMemory(total);
-            this.numbers = [];
+            // if (this.calculatorModel.getMemory() === "0" ) {
+            //     return
+            // }
+        this.calculatorModel.calculateResult();
+        this.numbers = [];
         }
     }
 
@@ -97,7 +83,7 @@ export class CalculatorController extends PIXI.Container {
     }
 
     private setCalculatorView() {
-        this.calculatorView = new CalculatorView();
+       // this.calculatorView = new CalculatorView();
         this.addChild(this.calculatorView)
     }
 

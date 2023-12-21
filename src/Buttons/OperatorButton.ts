@@ -28,10 +28,10 @@ export class OperatorButton extends BaseButton {
     //TODO IMPROVE INHERITANCE FROM BASE BUTTON REPEATABLE CODE FOR BUTTON APEARENCE
     protected createButton() {
         const gfx: PIXI.Graphics = new PIXI.Graphics();
-        gfx.beginFill(0x00FFFF);
-        gfx.drawRect(0, 0, 50, 50);
+        gfx.beginFill(0xffffff);
+        gfx.drawRoundedRect(0, 0, 50, 50, 10);
         gfx.endFill();
-        const texture: PIXI.Texture = GameApplication.getApp().renderer.generateTexture(gfx)
+        const texture: PIXI.Texture = GameApplication.getApp().renderer.generateTexture(gfx);
         this.button = new PIXI.Sprite(texture);
         this.button.x = this.xPos;
         this.button.y = this.yPos;
@@ -41,7 +41,7 @@ export class OperatorButton extends BaseButton {
 
     protected createLabel() {
         this.buttonText = new PIXI.Text(this.label, {
-            fill: 'white',
+            fill: 0x000000,
             fontSize: 20,
         })
         this.buttonText.anchor.set(0.5)
@@ -63,9 +63,13 @@ export class OperatorButton extends BaseButton {
     }
 
     protected onMouseOver() {
-        this.button.tint = 0x000000;
+        this.button.scale.x=0.95;
+        this.button.scale.y=0.95;
+       // this.button.tint = 0x000000;
     }
     protected onMouseOut() {
-        this.button.tint = 0x00FFFF;
+        this.button.scale.x=1;
+        this.button.scale.y=1;
+       // this.button.tint = 0x00FFFF;
     }
 }

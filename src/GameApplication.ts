@@ -1,8 +1,10 @@
 
 import * as PIXI from 'pixi.js';
+import { Assets } from '@pixi/assets';
 import { CalculatorView } from "./CalculatorView/CalculatorView";
 import { CalculatorController } from './CalculatorController/CalculatorController';
 import { CalculatorModel } from './CalculatorModel/CalculatorModel';
+import { CalculatorFactory } from './Factory/CalculatorFactory';
 
 export class GameApplication extends PIXI.Application {
 
@@ -25,15 +27,24 @@ export class GameApplication extends PIXI.Application {
     private init() {
         GameApplication.app = this;
         this.mainContainer = new PIXI.Container();
+        //Assets.add('iron', '../assets/image/aluminum.jpg')
         this.loader = new PIXI.Loader();
+        // this.loader.add('Digital-7', './assets/fonts/digital-7.ttf')
+        // this.loader.add('iron', './assets/image/aluminum.jpg')
+        // this.loader.add('key','./assets/image/keyboard-key.png');
+        // this.loader.add('aluminium','./assets/image/aluminum.jpg');
+        // this.loader.add('brushedmetal','./assets/image/Brushed-Metal-Texture.jpg');
+        // this.loader.add('sun','./assets/image/sun-sunglasses.jpg');
+        // this.loader.load();
         this.onLoadComplete();
+       
         window.onload = () => {
             const gameContainer: HTMLCanvasElement = document.getElementById("gameContainer") as HTMLCanvasElement;
             gameContainer.appendChild(this.view);
             this.stage.addChild(this.mainContainer);
 
             this.resizeCanvas();
-
+            this.loadAssets();
             this.view.style.position = 'absolute';
             this.view.style.left = '50%';
             this.view.style.top = '50%';
@@ -59,9 +70,23 @@ export class GameApplication extends PIXI.Application {
         window.addEventListener("resize", resize);
     }
 
+    private loadAssets(){
+        // PIXI.Loader.shared.add('sun','../assets/image/sun-sunglasses.jpg')
+        // this.loader.load();
+        
+        const texture: PIXI.Texture = PIXI.Texture.from('./assets/image/Brushed-Metal-Texture.jpg');
+        const metalStrip = new PIXI.Sprite(texture);
+        console.log(metalStrip,"AAAAAAAAAAAAAAAAAAAAAAAAAA")
+        metalStrip.y = 300
+        metalStrip.x=300
+      
+        this.mainContainer.addChild(metalStrip);
+    }
+
     private onLoadComplete() {
-        const model: CalculatorModel = new CalculatorModel()
-        const controller = new CalculatorController(model);
+        const model: CalculatorModel = new CalculatorModel();
+        const view: CalculatorView = new CalculatorView();
+        const controller = new CalculatorController(model,view,);
         this.mainContainer.addChild(controller);
     }
 

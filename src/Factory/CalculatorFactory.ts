@@ -25,7 +25,7 @@ export class CalculatorFactory extends PIXI.Container {
         let calculatorType: any
         let index: number = 0;
 
-        if (type === 'basic') {
+        if (type === 'Elka101') {
             calculatorType = ClaclatorType.basic;
         }
         for (let rows = 0; rows < calculatorType.rows; rows++) {
@@ -35,12 +35,12 @@ export class CalculatorFactory extends PIXI.Container {
                 index = rows * calculatorType.columns + columns;
 
                 if (typeof calculatorType.buttons[index] === 'number') {
-                    this.button = new NumericButton(calculatorType.buttons[index], columns * 1.2 * 50, rows * 1.2 * 50);
+                    this.button = new NumericButton(calculatorType.buttons[index], columns * 60, rows * 60);
                     this.buttons.push(this.button);
                 }
 
                 if (typeof calculatorType.buttons[index] === 'string') {
-                    this.button = new OperatorButton(calculatorType.buttons[index], columns * 1.2 * 50, rows * 1.2 * 50);
+                    this.button = new OperatorButton(calculatorType.buttons[index], columns * 60, rows * 60);
                     this.buttons.push(this.button);
                 }
             }
